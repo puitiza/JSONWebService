@@ -1,0 +1,5 @@
+c:\users\apuitiza.luckysac\documents\visual studio 2012\Projects\JSONWebService\JSONWebService\bin\JSONWebService.dll
+c:\users\apuitiza.luckysac\documents\visual studio 2012\Projects\JSONWebService\JSONWebService\bin\JSONWebService.pdb
+c:\users\apuitiza.luckysac\documents\visual studio 2012\Projects\JSONWebService\JSONWebService\obj\Release\JSONWebService.dll
+c:\users\apuitiza.luckysac\documents\visual studio 2012\Projects\JSONWebService\JSONWebService\obj\Release\JSONWebService.pdb
+C:\Users\apuitiza.LUCKYSAC\Documents\Visual Studio 2012\Projects\JSONWebService\JSONWebService\obj\Release\JSONWebService.csprojResolveAssemblyReference.cache
