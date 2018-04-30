@@ -12,8 +12,40 @@ namespace JSONWebService
     [ServiceContract]
     public interface IService1
     {
+
+        //BodyStyle = WebMessageBodyStyle.Wrapped
+        /*
+         * Este es el Formato que te bota de poner eso BodyStyle = WebMessageBodyStyle.Wrapped sino quiero que se muestro solo lo quito
+                "GetAllCustomersResult": [ 
+                                            {
+                                            "City": "Berlin",
+                                            "CompanyName": "Alfreds Futterkiste",
+                                            "CustomerID": "ALFKI"
+                                            },
+                                            {
+                                            "City": "México D.F.",
+                                            "CompanyName": "Ana Trujillo Emparedados y helados",
+                                            "CustomerID": "ANATR"
+                                            }
+                ]
+         * 
+         * Te tiene que quedar asi sin el BodyStyle = WebMessageBodyStyle.Wrapped
+           {
+              {
+                "City": "Berlin",
+                "CompanyName": "Alfreds Futterkiste",
+                "CustomerID": "ALFKI"
+              },
+              {
+                "City": "México D.F.",
+                "CompanyName": "Ana Trujillo Emparedados y helados",
+                "CustomerID": "ANATR"
+              }
+            }
+         */
+
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getAllCustomers")]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getAllCustomers")]
         List<wsCustomer> GetAllCustomers();
 
         [OperationContract]
