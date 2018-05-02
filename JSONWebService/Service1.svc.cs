@@ -81,6 +81,59 @@ namespace JSONWebService
             }
         }
 
+
+        /*Si fuera una lista seria asi
+         * public List<wsOrder> GetOrderDetails(String orderID)*/
+        public wsOrder GetOrderDetails(String orderID)
+        {
+            try
+            {
+                NorthwindDataContext dc = new NorthwindDataContext();
+                int orderIDnumber = int.Parse(orderID);
+                wsOrder results = new wsOrder();
+                System.Globalization.CultureInfo ci = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+            
+                foreach (Orders order in dc.Orders.Where(s => s.OrderID == orderIDnumber))
+                {
+                    results.OrderID = order.OrderID;
+                    results.OrderDate = (order.OrderDate == null) ? "" : order.OrderDate.Value.ToString("d", ci);
+                    results.ShipAddress = order.ShipAddress;
+                    results.ShipCity = order.ShipCity;
+                    results.ShipName = order.ShipName;
+                    results.ShipPostcode = order.ShipPostalCode;
+                    results.ShippedDate = (order.ShippedDate == null) ? "" : order.ShippedDate.Value.ToString("d", ci);     
+                }
+               /* 
+                * Esto es para retornar una lista
+                * List<wsOrder> results = new List<wsOrder>();
+                System.Globalization.CultureInfo ci = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+                foreach (Orders order in dc.Orders.Where(s => s.OrderID == orderIDnumber))
+                {
+                    results.Add(new wsOrder()
+                    {
+                        OrderID = order.OrderID,
+                        OrderDate = (order.OrderDate == null) ? "" : order.OrderDate.Value.ToString("d", ci),
+                        ShipAddress = order.ShipAddress,
+                        ShipCity = order.ShipCity,
+                        ShipName = order.ShipName,
+                        ShipPostcode = order.ShipPostalCode,
+                        ShippedDate = (order.ShippedDate == null) ? "" : order.ShippedDate.Value.ToString("d", ci)
+                    });
+                }*/
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //  Return any exception messages back to the Response header
+                OutgoingWebResponseContext response = WebOperationContext.Current.OutgoingResponse;
+                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                response.StatusDescription = ex.Message.Replace("\r\n", "");
+                return null;
+            }
+        }
+
+
         public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);

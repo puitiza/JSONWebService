@@ -13,6 +13,8 @@ namespace JSONWebService
     public interface IService1
     {
 
+        // TODO: agregue aquí sus operaciones de servicio
+
         //BodyStyle = WebMessageBodyStyle.Wrapped
         /*
          * Este es el Formato que te bota de poner eso BodyStyle = WebMessageBodyStyle.Wrapped sino quiero que se muestro solo lo quito
@@ -53,16 +55,27 @@ namespace JSONWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getData/{value}")]
         string GetData(string value);
 
-        //Esto es un metodo POST
+        //Esto es un metodo GET
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getOrdersForCustomer/{customerID}")]
-        List<wsOrder> GetOrdersForCustomer(string customerID); 
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getOrdersForCustomer/{customerID}")]
+        List<wsOrder> GetOrdersForCustomer(string customerID);
+
+        /*
+         * Cuando Usamos ( "Int" orderID) como parametro no va a funcionar en estos casos tenemos que pasarlo como string y adentro cambiarlo a Int
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getOrderDetails/{orderID}")]
+        List<wsOrder> GetOrderDetails(int orderID);
+        */
+        //Esto sería su solucion
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getOrderDetails/{orderID}")]
+        wsOrder GetOrderDetails(string orderID);
+        // List<wsOrder> GetOrderDetails(string orderID);
 
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        // TODO: agregue aquí sus operaciones de servicio
     }
 
 
