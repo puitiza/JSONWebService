@@ -72,6 +72,10 @@ namespace JSONWebService
         wsOrder GetOrderDetails(string orderID);
         // List<wsOrder> GetOrderDetails(string orderID);
 
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getCustomerOrderHistory/{customerID}")]
+        List<CustomerOrderHistory> GetCustomerOrderHistory(string customerID);
+
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);

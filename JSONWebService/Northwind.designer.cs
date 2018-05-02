@@ -83,6 +83,13 @@ namespace JSONWebService
 				return this.GetTable<Orders>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CustOrderHist")]
+		public ISingleResult<CustOrderHistResult> CustOrderHist([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerID", DbType="NChar(5)")] string customerID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerID);
+			return ((ISingleResult<CustOrderHistResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customers")]
@@ -826,6 +833,50 @@ namespace JSONWebService
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	public partial class CustOrderHistResult
+	{
+		
+		private string _ProductName;
+		
+		private System.Nullable<int> _Total;
+		
+		public CustOrderHistResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductName", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
+		public string ProductName
+		{
+			get
+			{
+				return this._ProductName;
+			}
+			set
+			{
+				if ((this._ProductName != value))
+				{
+					this._ProductName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Total", DbType="Int")]
+		public System.Nullable<int> Total
+		{
+			get
+			{
+				return this._Total;
+			}
+			set
+			{
+				if ((this._Total != value))
+				{
+					this._Total = value;
+				}
 			}
 		}
 	}

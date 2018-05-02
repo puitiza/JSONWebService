@@ -35,4 +35,11 @@
       <Association Name="Customers_Orders" Member="Customers" ThisKey="CustomerID" OtherKey="CustomerID" Type="Customers" IsForeignKey="true" />
     </Type>
   </Table>
+  <Function Name="dbo.CustOrderHist" Method="CustOrderHist">
+    <Parameter Name="CustomerID" Parameter="customerID" Type="System.String" DbType="NChar(5)" />
+    <ElementType Name="CustOrderHistResult">
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="Total" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

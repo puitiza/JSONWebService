@@ -133,6 +133,31 @@ namespace JSONWebService
             }
         }
 
+        public List<CustomerOrderHistory> GetCustomerOrderHistory(string customerID)
+        {
+            try
+            {
+                List<CustomerOrderHistory> results = new List<CustomerOrderHistory>();
+                NorthwindDataContext dc = new NorthwindDataContext();
+                foreach (CustOrderHistResult oneOrder in dc.CustOrderHist(customerID))
+                {
+                    results.Add(new CustomerOrderHistory()
+                    {
+                        ProductName = oneOrder.ProductName,
+                        Total = oneOrder.Total ?? 0
+                    });
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //  Return any exception messages back to the Response header
+                OutgoingWebResponseContext response = WebOperationContext.Current.OutgoingResponse;
+                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                response.StatusDescription = ex.Message.Replace("\r\n", "");
+                return null;
+            }
+        }
 
         public string GetData(string value)
         {
