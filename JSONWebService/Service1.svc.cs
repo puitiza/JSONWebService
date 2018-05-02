@@ -162,23 +162,19 @@ namespace JSONWebService
             }
         }
 
-        public int UpdateOrderAddress(Stream JSONdataStream)
+        public int UpdateOrderAddress(wsOrder order)
         {
-            /* This return value will be:
-             0	If everything was succesful
-            -1	If an exception occurred
-            -2	If the JSON wasn't in the correct format
-            -3	If we couldn't find an [Order] record with the specified ID
-             */
             try
             {
                 // Read in our Stream into a string...
+                /*
+                 * Esto Ya no es necesario para convertir de JSON to object
                 StreamReader reader = new StreamReader(JSONdataStream);
                 string JSONdata = reader.ReadToEnd();
 
                 // ..then convert the string into a single "wsOrder" record.
                 JavaScriptSerializer jss = new JavaScriptSerializer();
-                wsOrder order = jss.Deserialize<wsOrder>(JSONdata);
+                wsOrder order = jss.Deserialize<wsOrder>(JSONdata);*/
                 if (order == null)
                 {
                     // Error: Couldn't deserialize our JSON string into a "wsOrder" object.
@@ -204,8 +200,10 @@ namespace JSONWebService
 
                 return 0;     // Success !
             }
-            catch (Exception) { return -1; }
-
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
         public string GetData(string value)

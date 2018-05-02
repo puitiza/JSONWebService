@@ -78,7 +78,9 @@ namespace JSONWebService
         //Un Ejemplo de metodo Post
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "updateOrderAddress")]
-        int UpdateOrderAddress(Stream JSONdataStream);
+        int UpdateOrderAddress(wsOrder JSONdataStream);
+        
+
 
         //Ejemplos de Web sdervices al crear esta clase por defecto
         [OperationContract]
