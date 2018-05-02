@@ -49,6 +49,38 @@ namespace JSONWebService
             }
         }
 
+        public List<wsOrder> GetOrdersForCustomer(string customerID)
+        {
+            try
+            {
+                NorthwindDataContext dc = new NorthwindDataContext();
+                List<wsOrder> results = new List<wsOrder>();
+                System.Globalization.CultureInfo ci = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+                foreach (Orders order in dc.Orders.Where(s => s.CustomerID == customerID))
+                {
+                    results.Add(new wsOrder()
+                    {
+                        OrderID = order.OrderID,
+                        OrderDate = (order.OrderDate == null ) ? "" : order.OrderDate.Value.ToString("d",ci),
+                        ShipAddress = order.ShipAddress,
+                        ShipCity = order.ShipCity,
+                        ShipName = order.ShipName,
+                        ShipPostcode = order.ShipPostalCode,
+                        ShippedDate = (order.ShippedDate == null) ? "" : order.ShippedDate.Value.ToString("d", ci)
+                    });
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                //  Return any exception messages back to the Response header
+                OutgoingWebResponseContext response = WebOperationContext.Current.OutgoingResponse;
+                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                response.StatusDescription = ex.Message.Replace("\r\n", "");
+                return null;
+            }
+        }
+
         public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);

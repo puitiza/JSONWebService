@@ -44,6 +44,7 @@ namespace JSONWebService
             }
          */
 
+        //Esto es un metodo GET
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getAllCustomers")]
         List<wsCustomer> GetAllCustomers();
@@ -51,6 +52,12 @@ namespace JSONWebService
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getData/{value}")]
         string GetData(string value);
+
+        //Esto es un metodo POST
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getOrdersForCustomer/{customerID}")]
+        List<wsOrder> GetOrdersForCustomer(string customerID); 
+
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
