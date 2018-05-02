@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 
+using System.IO;
+
 namespace JSONWebService
 {
     // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IService1" en el código y en el archivo de configuración a la vez.
@@ -51,10 +53,6 @@ namespace JSONWebService
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getAllCustomers")]
         List<wsCustomer> GetAllCustomers();
 
-        [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getData/{value}")]
-        string GetData(string value);
-
         //Esto es un metodo GET
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getOrdersForCustomer/{customerID}")]
@@ -72,10 +70,20 @@ namespace JSONWebService
         wsOrder GetOrderDetails(string orderID);
         // List<wsOrder> GetOrderDetails(string orderID);
 
+        //Es Ejemplo de metodo GET con storedProcedure
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getCustomerOrderHistory/{customerID}")]
         List<CustomerOrderHistory> GetCustomerOrderHistory(string customerID);
+        
+        //Un Ejemplo de metodo Post
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "updateOrderAddress")]
+        int UpdateOrderAddress(Stream JSONdataStream);
 
+        //Ejemplos de Web sdervices al crear esta clase por defecto
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "getData/{value}")]
+        string GetData(string value);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);

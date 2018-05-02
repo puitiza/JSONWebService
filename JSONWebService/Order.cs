@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 
+//[Serializable] to allow the JavaScriptSerializer to work with our wsOrder class
 namespace JSONWebService
 {
     [DataContract]
+    [Serializable]
     public class wsOrder
     {
         [DataMember]

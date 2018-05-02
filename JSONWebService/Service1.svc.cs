@@ -6,6 +6,9 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 
+using System.IO;
+using System.Web.Script.Serialization;
+
 namespace JSONWebService
 {
     // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
@@ -157,6 +160,52 @@ namespace JSONWebService
                 response.StatusDescription = ex.Message.Replace("\r\n", "");
                 return null;
             }
+        }
+
+        public int UpdateOrderAddress(Stream JSONdataStream)
+        {
+            /* This return value will be:
+             0	If everything was succesful
+            -1	If an exception occurred
+            -2	If the JSON wasn't in the correct format
+            -3	If we couldn't find an [Order] record with the specified ID
+             */
+            try
+            {
+                // Read in our Stream into a string...
+                StreamReader reader = new StreamReader(JSONdataStream);
+                string JSONdata = reader.ReadToEnd();
+
+                // ..then convert the string into a single "wsOrder" record.
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                wsOrder order = jss.Deserialize<wsOrder>(JSONdata);
+                if (order == null)
+                {
+                    // Error: Couldn't deserialize our JSON string into a "wsOrder" object.
+                    return -2;
+                }
+
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Orders currentOrder = dc.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+                if (currentOrder == null)
+                {
+                    // Couldn't find an [Order] record with this ID
+                    return -3;
+                }
+
+                // Update our SQL Server [Order] record, with our new Shipping Details (send from whatever
+                // app is calling this web service)
+                currentOrder.ShipName = order.ShipName;
+                currentOrder.ShipAddress = order.ShipAddress;
+                currentOrder.ShipCity = order.ShipCity;
+                currentOrder.ShipPostalCode = order.ShipPostcode;
+
+                dc.SubmitChanges();
+
+                return 0;     // Success !
+            }
+            catch (Exception) { return -1; }
+
         }
 
         public string GetData(string value)
