@@ -84,6 +84,58 @@ namespace JSONWebService
             }
         }
 
+        public wsSQLResult DeleteCustomer(string customerID)
+        {
+          /* Esta forma no es recomendable porque lo que va a hacer es eliminar al cliente pero y si ese
+           * cliente tiene relacion con demas tablas nos saltaria excepciones
+           * try
+            {
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Customers cust = dc.Customers.Where(s => s.CustomerID == customerID).FirstOrDefault();
+                if (cust == null)
+                {
+                    // We couldn't find a [Customer] record with this ID.
+                    return -3;
+                }
+
+                dc.Customers.DeleteOnSubmit(cust);
+                dc.SubmitChanges();
+
+                return 0;    // Success !
+            }
+            catch (Exception ex)
+            {
+                return -1;    // Failed.
+            } */
+
+            //Esta es una forma recomendable 
+            wsSQLResult result = new wsSQLResult();
+            try
+            {
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Customers cust = dc.Customers.Where(s => s.CustomerID == customerID).FirstOrDefault();
+                if (cust == null)
+                {
+                    // We couldn't find a [Customer] record with this ID.
+                    result.WasSuccessful = -3;
+                    result.Exception = "Could not find a [Customer] record with ID: " + customerID.ToString();
+                    return result;
+                }
+
+                dc.Customers.DeleteOnSubmit(cust);
+                dc.SubmitChanges();
+
+                result.WasSuccessful = 1;
+                result.Exception = "";
+                return result;     // Success !
+            }
+            catch (Exception ex)
+            {
+                result.WasSuccessful = -1;
+                result.Exception = "An exception occurred: " + ex.Message;
+                return result;     // Failed.
+            }
+        }
 
         /*Si fuera una lista seria asi
          * public List<wsOrder> GetOrderDetails(String orderID)*/
@@ -159,6 +211,50 @@ namespace JSONWebService
                 response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 response.StatusDescription = ex.Message.Replace("\r\n", "");
                 return null;
+            }
+        }
+
+
+        public wsSQLResult CreateCustomer(wsCustomer customer)
+        {
+            wsSQLResult result = new wsSQLResult();
+            try
+            {
+               /*
+                // Read in our Stream into a string...
+                StreamReader reader = new StreamReader(JSONdataStream);
+                string JSONdata = reader.ReadToEnd();
+
+                // ..then convert the string into a single "wsCustomer" record.
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                wsCustomer cust = jss.Deserialize<wsCustomer>(JSONdata);*/
+                if (customer == null)
+                {
+                    result.WasSuccessful = 0; // Failed.
+                    result.Exception = "Unable to deserialize the JSON data.";
+                    return result;
+                }
+
+                NorthwindDataContext dc = new NorthwindDataContext();
+                Customers newCustomer = new Customers()
+                {
+                    CustomerID = customer.CustomerID,
+                    CompanyName = customer.CompanyName,
+                    City = customer.City
+                };
+
+                dc.Customers.InsertOnSubmit(newCustomer);
+                dc.SubmitChanges();
+
+                result.WasSuccessful = 1; // Success !
+                result.Exception = "";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.WasSuccessful = 0;
+                result.Exception = ex.Message;
+                return result;
             }
         }
 
