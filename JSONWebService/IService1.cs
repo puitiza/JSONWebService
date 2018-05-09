@@ -60,7 +60,7 @@ namespace JSONWebService
 
         //Esto es un metodo GET "Con parametro" ---  CRUD(DELETE)
         [OperationContract]
-        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "deleteCustomer/{customerID}")]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "deleteCustomer/{customerID}")]
         wsSQLResult DeleteCustomer(string customerID);
         // int DeleteCustomer(string customerID); -- -Esta es la forma no recomendable
 
