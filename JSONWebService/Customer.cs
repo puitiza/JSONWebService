@@ -19,8 +19,4 @@ namespace JSONWebService
         public string City { get; set; }
 
     }
-
-    //public class Customer
-    //{
-    //}
 }
