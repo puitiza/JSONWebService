@@ -1,7 +1,51 @@
 # JSONWebService
 Este proyecto solamente es una guia de como desplegarlo en tu laptop o PC correctamente, de todas formas estaré poniendo los links que me ayudaron.
 
-1. Crear un BD ('Northwind') 
+### Paso 1: Información
+
+Estos son los web services que se están implementando. La BD está como LINQ to SQL Classes
+
+```csharp
+//Esto es un metodo GET "Sin parametro" ---  CRUD(READ)
+[OperationContract]
+[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getAllCustomers")]
+List<wsCustomer> GetAllCustomers();
+```        
+```csharp
+//Esto es un metodo GET "Con parametro" ---  CRUD(READ)
+[OperationContract]
+[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getOrdersForCustomer/{customerID}")]
+List<wsOrder> GetOrdersForCustomer(string customerID);
+``` 
+```csharp
+//Esto es un metodo GET "Con parametro" ---  CRUD(DELETE)
+[OperationContract]
+[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "deleteCustomer/{customerID}")]
+wsSQLResult DeleteCustomer(string customerID);
+``` 
+```csharp
+[OperationContract]
+[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getOrderDetails/{orderID}")]
+wsOrder GetOrderDetails(string orderID);
+``` 
+```csharp
+[OperationContract]
+[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "getCustomerOrderHistory/{customerID}")]
+List<CustomerOrderHistory> GetCustomerOrderHistory(string customerID);
+ ``` 
+```csharp       
+//Un Ejemplo de metodo Post -- CRUD(UPDATE)
+[OperationContract]
+[WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "updateOrderAddress")]
+int UpdateOrderAddress(wsOrder JSONdataStream);
+``` 
+```csharp
+[OperationContract]
+[WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, UriTemplate = "createCustomer")]
+wsSQLResult CreateCustomer(wsCustomer JSONdataStream);
+```
+
+### Paso 2: Crear un BD ('Northwind') 
 > Para esto lo unico que debes es restaurar un backup que también esta en este proyecto, solo sigue el orden de las imagenes para guiarte   
 > En la 1° Img, dale  clic derecho y te mostrará restaurar Base de Datos.
 Images:  
@@ -14,7 +58,7 @@ Images:
 5° Imagen                |
 ![alt text][logo5] 		   |
 
-2. Configurar las conexiones 
+### Paso 3: Configurar las conexiones 
 > Esto principalmente es para las otras ramas, lo unico que debes hacer es cambiar la cadena de conexion por la tuya. Como puedes ver en las fotos la cadena de conexion están apuntado a la BD de mi laptop asi que pon la cadena de tu laptop o PC   
 > En la 2° Img, dale  clic derecho y te mostrará que debes configurar.
 Images:  
@@ -37,7 +81,7 @@ Images:
 :-----------------------:|
 ![alt text][logo12] 		 |
 
-4. Desplegar en tu WebServices en otras maquinas(Opcional)
+### Paso 4: Desplegar en tu WebServices en otras maquinas(Opcional)
 > Creo que para completar este proyecto sería desplegarlo en otras maquinas y probarlo. En mi caso hice una App para consumir estos servicios.
 > Te dejó 2 links que me ayudaron a desplegarlo, además estaré dejando un par de imagenes:  
  1.- https://stackoverflow.com/questions/4831097/bad-request-invalid-hostname-iis7#  
